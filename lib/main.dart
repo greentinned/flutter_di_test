@@ -8,7 +8,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final exp = ExperimentData(button: Button);
+    final exp = ExperimentData(button: ({String title}) => Button(title: title));
 
     return MaterialApp(
       title: 'Flutter Demo',

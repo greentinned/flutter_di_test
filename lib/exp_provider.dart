@@ -18,7 +18,7 @@ class ExperimentProvider extends InheritedWidget {
   }
 
   static ExperimentData of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(ExperimentData) as ExperimentData;
+    return (context.inheritFromWidgetOfExactType(ExperimentProvider) as ExperimentProvider).data;
   }
 }
 
@@ -27,5 +27,5 @@ class ExperimentData {
     this.button
   });
 
-  final Type button;
+  final Button Function({String title}) button;
 }
