@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
 import './typo.dart';
 
-class Button extends StatelessWidget {
-  Button({Key key, this.title}) : super(key: key);
+class ButtonBuilder {
+  ButtonBuilder({
+    this.title,
+  });
 
   final String title;
+
+  ButtonBuilder copyWith({
+    String title,
+  }) {
+    return ButtonBuilder(
+      title: title ?? this.title,
+    );
+  }
+}
+
+class Button extends StatelessWidget {
+  Button(
+    this.builder, {
+    Key key,
+  }) : super(key: key);
+
+  final ButtonBuilder builder;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +35,7 @@ class Button extends StatelessWidget {
         color: Colors.grey,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Text(title, style: body),
+      child: Text(builder.title, style: body),
     );
   }
 }

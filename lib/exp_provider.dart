@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 
-import 'components/button.dart';
+import 'exp/button.dart';
 
 class ExperimentProvider extends InheritedWidget {
   ExperimentProvider({
-    Key key, 
-    @required this.data, 
+    Key key,
+    @required this.data,
     Widget child,
-  })  : assert(data != null),  
+  })  : assert(data != null),
         super(key: key, child: child);
 
   final ExperimentData data;
-  
+
   @override
   bool updateShouldNotify(ExperimentProvider oldWidget) {
     return data != oldWidget.data;
   }
 
   static ExperimentData of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(ExperimentProvider) as ExperimentProvider).data;
+    return (context.inheritFromWidgetOfExactType(ExperimentProvider)
+            as ExperimentProvider)
+        .data;
   }
 }
 
 class ExperimentData {
   ExperimentData({
-    this.button
+    this.button,
   });
 
-  final Button Function({String title}) button;
+  final ButtonWithExp button;
 }
