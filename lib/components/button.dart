@@ -34,6 +34,10 @@ class ButtonThemeData {
   });
 
   final Color bg;
+
+  ButtonThemeData merge(ButtonThemeData theme) {
+    return ButtonThemeData(bg: theme.bg ?? this.bg);
+  }
 }
 
 class Button extends StatelessWidget {
@@ -47,7 +51,9 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of<ThemeData>(context);
-    final buttonTheme = Theme.of<ButtonThemeData>(context);
+    final buttonTheme = ButtonThemeData(bg: Colors.green).merge(
+      Theme.of<ButtonThemeData>(context),
+    );
 
     return Container(
       height: 64,
