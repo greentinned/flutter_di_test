@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' hide Theme, ThemeData;
 
 import './exp_provider.dart';
 import './showcase.dart';
-import 'exp/button.dart';
+import 'components/theme.dart';
 import 'exp/button_lib.dart';
 import 'exp_data.dart';
 
