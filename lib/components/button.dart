@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_ui_components/flutter_ui_components.dart';
+import 'package:flutter/material.dart' hide Theme, ThemeData;
+import 'package:di_test/components/theme.dart';
 import './typo.dart';
 
 class ButtonBuilder {
@@ -9,12 +9,34 @@ class ButtonBuilder {
 
   final String title;
 
-  ButtonBuilder copyWith({
-    String title,
-  }) {
-    return ButtonBuilder(
-      title: title ?? this.title,
+  Widget get normal {
+    return Theme(
+      data: ButtonThemeData(
+        bg: Colors.grey,
+      ),
+      child: Button(this),
     );
+  }
+
+  Widget get accent {
+    return Theme(
+      data: ButtonThemeData(
+        bg: Colors.amberAccent,
+      ),
+      child: Button(this),
+    );
+  }
+}
+
+class ButtonThemeData {
+  ButtonThemeData({
+    this.bg,
+  });
+
+  final Color bg;
+
+  ButtonThemeData merge(ButtonThemeData theme) {
+    return ButtonThemeData(bg: theme.bg ?? this.bg);
   }
 }
 
@@ -28,15 +50,23 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of<ThemeData>(context);
+    final buttonTheme = ButtonThemeData(bg: Colors.green).merge(
+      Theme.of<ButtonThemeData>(context),
+    );
+
     return Container(
       height: 64,
       padding: EdgeInsets.symmetric(horizontal: 20),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: YXColors.gray175,
-        borderRadius: BorderRadius.circular(16),
+        color: buttonTheme.bg,
+        borderRadius: BorderRadius.circular(8),
       ),
-      child: Text(builder.title, style: body),
+      child: Text(
+        builder.title,
+        style: body.copyWith(color: theme.colors.text),
+      ),
     );
   }
 }

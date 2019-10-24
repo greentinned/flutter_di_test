@@ -1,5 +1,6 @@
-import 'package:di_test/exp_provider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Theme, ThemeData;
+
+import './exp_provider.dart';
 import './showcase.dart';
 import 'exp/button.dart';
 import 'exp/button_lib.dart';
@@ -20,7 +21,15 @@ class MyApp extends StatelessWidget {
       home: ExperimentProvider(
         expNames: ['foo'],
         data: exp,
-        child: ShowcasePage(),
+        child: Theme(
+          data: ThemeData(
+            colors: ColorPalette(
+              text: Colors.black,
+              secondaryText: Colors.grey,
+            ),
+          ),
+          child: ShowcasePage(),
+        ),
       ),
     );
   }
