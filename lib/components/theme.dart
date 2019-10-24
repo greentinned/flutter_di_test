@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class Theme<T> extends InheritedWidget {
+class Theme<T extends MergableThemeData> extends InheritedWidget {
   Theme({
     Key key,
     this.data,
@@ -16,19 +16,38 @@ class Theme<T> extends InheritedWidget {
 
   static Type _typeOf<T>() => T;
 
-  static T of<T>(BuildContext context) {
+  Theme parent(BuildContext context) {
+    final type = _typeOf<Theme<T>>();
+    return context.inheritFromWidgetOfExactType(type) as Theme<T>;
+  }
+
+  static T of<T extends MergableThemeData>(BuildContext context) {
     final type = _typeOf<Theme<T>>();
     final theme = context.inheritFromWidgetOfExactType(type) as Theme<T>;
-    print(theme);
+
+    // while (theme.parent(context) != null) {
+    //   print(theme.parent(context).data);
+    // }
+
+    // return theme?.data?.merge(theme.parent(context));
 
     return theme?.data;
   }
 }
 
-class ThemeData {
+mixin MergableThemeData<T> {
+  T merge(T theme);
+}
+
+class ThemeData with MergableThemeData<ThemeData> {
   ThemeData({this.colors});
 
   final ColorPalette colors;
+
+  @override
+  ThemeData merge(ThemeData theme) {
+    return ThemeData(colors: theme.colors ?? this.colors);
+  }
 }
 
 class ColorPalette {
