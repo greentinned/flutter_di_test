@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_components/flutter_ui_components.dart';
 import './typo.dart';
 
 class ButtonBuilder {
@@ -32,8 +33,8 @@ class Button extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(8),
+        color: YXColors.gray175,
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Text(builder.title, style: body),
     );

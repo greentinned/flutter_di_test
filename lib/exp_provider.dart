@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-
-import 'exp/button.dart';
+import 'exp_data.dart';
 
 class ExperimentProvider extends InheritedWidget {
   ExperimentProvider({
     Key key,
+    @required this.expNames,
     @required this.data,
     Widget child,
   })  : assert(data != null),
         super(key: key, child: child);
 
+  final List<String> expNames;
   final ExperimentData data;
 
   @override
@@ -22,12 +23,4 @@ class ExperimentProvider extends InheritedWidget {
             as ExperimentProvider)
         .data;
   }
-}
-
-class ExperimentData {
-  ExperimentData({
-    this.button,
-  });
-
-  final ButtonWithExp button;
 }
