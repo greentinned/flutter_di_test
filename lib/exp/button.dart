@@ -7,7 +7,7 @@ import '../components/typo.dart';
 class Button extends StatelessWidget {
   Button(this.builder, {Key key}) : super(key: key);
 
-  final ButtonBuilder builder;
+  final ButtonProps builder;
 
   @override
   Widget build(BuildContext context) {
@@ -27,5 +27,5 @@ class Button extends StatelessWidget {
   }
 }
 
-typedef ButtonWithExp<T> = T Function(ButtonBuilder builder);
-final ButtonWithExp buttonWithExp = (ButtonBuilder builder) => Button(builder);
+typedef ButtonWithExp<T> = T Function(ButtonProps builder);
+final ButtonWithExp buttonWithExp = (ButtonProps builder) => Button(builder);

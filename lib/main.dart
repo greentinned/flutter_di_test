@@ -1,35 +1,26 @@
 import 'package:flutter/material.dart' hide Theme, ThemeData;
 
-import './exp_provider.dart';
 import './showcase.dart';
 import 'components/theme.dart';
-import 'exp/button_lib.dart';
-import 'exp_data.dart';
+import 'components/theme_data.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isNightMode = false;
+
   @override
   Widget build(BuildContext context) {
-    final exp = ExperimentData(
-      expName: 'newButton',
-      button: buttonLibWithExp,
-    );
-
     return MaterialApp(
       title: 'Flutter Demo',
-      home: ExperimentProvider(
-        expNames: ['foo'],
-        data: exp,
-        child: Theme(
-          data: ThemeData(
-            colors: ColorPalette(
-              text: Colors.black,
-              secondaryText: Colors.grey,
-            ),
-          ),
-          child: ShowcasePage(),
-        ),
+      home: YXTheme(
+        data: isNightMode ? YXThemeData.dark : YXThemeData.light,
+        child: ShowcasePage(),
       ),
     );
   }

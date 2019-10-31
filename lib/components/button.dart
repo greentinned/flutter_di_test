@@ -1,46 +1,28 @@
-import 'package:flutter/material.dart' hide Theme, ThemeData;
-import 'package:di_test/components/theme.dart';
-import 'package:flutter_ui_components/flutter_ui_components.dart';
+import 'package:flutter/material.dart' hide Theme, ThemeData, ButtonThemeData;
+import 'package:flutter_ui_components/flutter_ui_components.dart'
+    hide YXTheme, YXThemeData;
 
-class ButtonBuilder {
-  ButtonBuilder({
+import 'theme.dart';
+import 'theme_data.dart';
+import 'button_theme_data.dart';
+export 'button_theme_data.dart';
+
+class ButtonProps with YXMergeable<ButtonProps> {
+  ButtonProps({
     this.title,
+    this.subtitle,
+    this.isAccent = false,
   });
 
   final String title;
-
-  Widget get normal {
-    return Theme(
-      data: ButtonThemeData(
-        bg: Colors.grey,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Button(this),
-    );
-  }
-
-  Widget get accent {
-    return Theme(
-      data: ButtonThemeData(
-        bg: Colors.amberAccent,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: normal,
-    );
-  }
-}
-
-class ButtonThemeData with MergableThemeData<ButtonThemeData> {
-  ButtonThemeData({this.bg, this.borderRadius});
-
-  final Color bg;
-  final BorderRadius borderRadius;
+  final String subtitle;
+  final bool isAccent;
 
   @override
-  merge(theme) {
-    return ButtonThemeData(
-      bg: theme.bg ?? this.bg,
-      borderRadius: theme.borderRadius ?? this.borderRadius,
+  ButtonProps merge(ButtonProps override) {
+    return ButtonProps(
+      title: override.title ?? title,
+      isAccent: override.isAccent ?? isAccent,
     );
   }
 }
@@ -51,24 +33,42 @@ class Button extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
-  final ButtonBuilder builder;
+  final ButtonProps builder;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of<ThemeData>(context);
-    final buttonTheme = Theme.of<ButtonThemeData>(context);
+    /// Всегда верхний уровень темы
+    final buttonTheme = YXTheme.of<YXThemeData>(context).buttonTheme;
+
+    /// Переопределение где-то по середине,
+    /// не повиляет на использованные компоненты ниже уровнем
+    final overrideButtonTheme = YXTheme.of<ButtonThemeData>(context);
+
+    /// Финальная тема с учетом модификаций `fromProps`
+    final resultButtonTheme =
+        buttonTheme.merge(overrideButtonTheme).fromProps(builder);
 
     return Container(
-      height: 64,
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      height: resultButtonTheme.height,
+      padding: EdgeInsets.symmetric(horizontal: mu(2)),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: buttonTheme.bg,
-        borderRadius: buttonTheme.borderRadius,
+        color: resultButtonTheme.background,
+        borderRadius: resultButtonTheme.borderRadius,
       ),
-      child: Text(
-        builder.title,
-        style: YXTypography.body.copyWith(color: theme.colors.text),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            builder.title,
+            style: resultButtonTheme.titleStyle,
+          ),
+          if (builder.subtitle != null)
+            Text(
+              builder.subtitle,
+              style: resultButtonTheme.subtitleStyle,
+            ),
+        ],
       ),
     );
   }
